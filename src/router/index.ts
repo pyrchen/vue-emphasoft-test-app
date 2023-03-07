@@ -1,25 +1,50 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { AuthPage, MainPage } from '@/pages';
+import { useAuthGuard } from '@/router/authGuard';
+import { use404Guard } from '@/router/404Guard';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView,
+    path: '/users',
+    meta: { requiresAuth: true, title: 'Users' },
+    component: MainPage,
+    children: [
+      {
+        path: ':id',
+        meta: { requiresAuth: true },
+        component: () => import(/* webpackChunkName: "User Info" */ '../components/UserInfo.vue'),
+      },
+    ],
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
+    path: '/auth',
+    meta: { restrictedForAuthed: true, title: 'Authorization' },
+    component: AuthPage,
+  },
+  {
+    path: '/users/:username/profile',
+    meta: { requiresAuth: true, title: 'Profile' },
+    component: () => import(/* webpackChunkName: "Profile" */ '../pages/ProfilePage.vue'),
+  },
+  {
+    path: '/users/create',
+    meta: { requiresAuth: true, title: 'Create User' },
+    component: () => import(/* webpackChunkName: "Create" */ '../pages/CreateUserPage.vue'),
+  },
+  {
+    path: '/users/:id(\\d+)/edit',
+    meta: { requiresAuth: true, title: 'Edit User' },
+    component: () => import(/* webpackChunkName: "Edit" */ '../pages/EditUserPage.vue'),
   },
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
+  strict: true,
 });
+
+router.beforeEach(useAuthGuard);
+router.beforeEach(use404Guard);
 
 export default router;
