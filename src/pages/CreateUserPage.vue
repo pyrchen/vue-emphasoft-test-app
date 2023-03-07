@@ -36,8 +36,8 @@ const onSubmit = handleSubmit(async (values) => {
   <v-toolbar color="primary">
     <v-container class="d-flex align-center">
       <v-btn
-        icon="mdi-arrow-left"
-        @click="router.push('/users/create')"
+        icon="mdi mdi-arrow-left"
+        @click="router.back()"
       />
     </v-container>
   </v-toolbar>
