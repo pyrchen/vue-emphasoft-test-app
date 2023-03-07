@@ -39,7 +39,7 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.NODE_ENV === 'production' ? '/vue-emphasoft-test-app/' : '/'),
+  history: createWebHistory('/'),
   routes,
   strict: true,
 });
