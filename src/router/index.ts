@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { AuthPage, MainPage } from '@/pages';
 import { useAuthGuard } from '@/router/authGuard';
 import { use404Guard } from '@/router/404Guard';
@@ -39,7 +39,7 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.NODE_ENV === 'production' ? '/vue-emphasoft-test-app/' : '/'),
+  history: createWebHashHistory(process.env.NODE_ENV === 'production' ? '/vue-emphasoft-test-app/' : '/'),
   routes,
   strict: true,
 });
